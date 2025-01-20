@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Ultimate's Notebook</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Courier New', Courier, monospace;
+            background: #f0f0f0;
+            display: flex;
+        }
+
+        /* Notebook spine and cover styling */
+        .notebook {
+            display: flex;
+            width: 100%;
+            height: 100vh;
+            background: #fff;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Table of contents sidebar */
+        .toc {
+            width: 250px;
+            background: #fafafa;
+            border-right: 2px solid #e0e0e0;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        /* Chapter styling */
+        .chapter {
+            margin-bottom: 20px;
+        }
+
+        .chapter-title {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .pages {
+            margin-left: 20px;
+            display: none;
+        }
+
+        .pages.active {
+            display: block;
+        }
+
+        .page {
+            padding: 5px;
+            cursor: pointer;
+            color: #34495e;
+            transition: background 0.3s;
+        }
+
+        .page:hover {
+            background: #e0e0e0;
+        }
+
+        /* Content area styling */
+        .content {
+            flex-grow: 1;
+            padding: 40px;
+            background-image: linear-gradient(#e5e5e5 1px, transparent 1px);
+            background-size: 100% 25px;
+            line-height: 25px;
+            overflow-y: auto;
+        }
+
+        .content-header {
+            margin-bottom: 20px;
+            border-bottom: 2px solid #2c3e50;
+        }
+
+        /* Add notebook binding effect */
+        .binding {
+            width: 30px;
+            background: linear-gradient(90deg, #d4d4d4, #ffffff);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .binding-ring {
+            width: 20px;
+            height: 20px;
+            background: #a0a0a0;
+            border-radius: 50%;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="notebook">
+        <!-- Notebook binding -->
+        <div class="binding">
+            <div class="binding-ring"></div>
+            <div class="binding-ring"></div>
+            <div class="binding-ring"></div>
+            <div class="binding-ring"></div>
+            <div class="binding-ring"></div>
+        </div>
+
+        <!-- Table of contents -->
+        <div class="toc">
+            <h2>Notebook Contents</h2>
+            <div id="chapters"></div>
+        </div>
+
+        <!-- Content area -->
+        <div class="content">
+            <div class="content-header">
+                <h1 id="pageTitle">Welcome to Ultimate's Notebook</h1>
+            </div>
+            <div id="pageContent">
+                Select a page from the table of contents to begin reading.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample notebook structure - this would typically come from your file system
+        const notebook = {
+            "abc": [
+                "IPI_BM.txt",
+                "IPI_Vsphere.txt"
+            ],
+            "Chapter 2: Main Content": [
+                "topic-1.txt",
+                "topic-2.txt"
+            ],
+            "Chapter 3: Conclusion": [
+                "summary.txt",
+                "next-steps.txt"
+            ]
+        };
+
+        // Function to load the table of contents
+        function loadTOC() {
+            const chaptersDiv = document.getElementById('chapters');
+            
+            for (const [chapter, pages] of Object.entries(notebook)) {
+                const chapterDiv = document.createElement('div');
+                chapterDiv.className = 'chapter';
+                
+                const chapterTitle = document.createElement('div');
+                chapterTitle.className = 'chapter-title';
+                chapterTitle.textContent = chapter;
+                
+                const pagesDiv = document.createElement('div');
+                pagesDiv.className = 'pages';
+                
+                pages.forEach(page => {
+                    const pageDiv = document.createElement('div');
+                    pageDiv.className = 'page';
+                    pageDiv.textContent = page.replace('.txt', '').split('-').join(' ');
+                    pageDiv.onclick = () => loadPage(page);
+                    pagesDiv.appendChild(pageDiv);
+                });
+                
+                chapterTitle.onclick = () => {
+                    pagesDiv.classList.toggle('active');
+                };
+                
+                chapterDiv.appendChild(chapterTitle);
+                chapterDiv.appendChild(pagesDiv);
+                chaptersDiv.appendChild(chapterDiv);
+            }
+        }
+
+        // Function to load page content
+        async function loadPage(filename) {
+            try {
+                // In a real implementation, this would fetch the actual text file
+                // For demo purposes, we'll show placeholder content
+               const content = `${filename}`;
+                
+                document.getElementById('pageTitle').textContent = 
+                    filename.replace('.txt', '').split('-').join(' ');
+                document.getElementById('pageContent').textContent = content;
+            } catch (error) {
+                console.error('Error loading page:', error);
+                document.getElementById('pageContent').textContent = 
+                    'Error loading page content.';
+            }
+        }
+
+        // Initialize the notebook
+        loadTOC();
+    </script>
+</body>
+</html>
