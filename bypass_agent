@@ -1,0 +1,35 @@
+## By Pass Agent Based Validations!
+
+- Get the cluster_id and make note of it as the cluster_id is needed in subsequent API calls:
+
+
+$ curl -s -S http://<RENDEZVOUS_IP>:8090/api/assisted-install/v2/clusters | jq . | grep cluster_id
+
+
+- optionally, query the API to see any validations that failed on that host. Increment the .hosts[0] to iterate over each host if desired:
+
+
+$ curl -s -S http://<RENDEZVOUS_IP>:8090/api/assisted-install/v2/clusters/{cluster_id} | jq .hosts[0].validations_info
+
+
+- list the currently ignored validations (by default it should be empty with no validations ignored):
+
+
+$ curl -s -S http://<RENDEZVOUS_IP>:8090/api/assisted-install/v2/clusters/{cluster_id}/ignored-validations
+
+- apply the validation that should be disabled; in this case we'll try ignoring all validations:
+
+
+$ curl -X PUT -H "Content-Type: application/json" -d '{"host-validation-ids": "[\"all\"]"}' -s -S http://<RENDEZVOUS_IP>:8090/api/assisted-install/v2/clusters/{cluster_id}/ignored-validations
+$ curl -X PUT -H "Content-Type: application/json" -d '{"cluster-validation-ids": "[\"all\"]"}' -s -S http://<RENDEZVOUS_IP>:8090/api/assisted-install/v2/clusters/{cluster_id}/ignored-validations
+
+
+- Repeat step #3 to confirm that particular validations are now ignored:
+
+
+$ curl -s -S http://<RENDEZVOUS_IP>:8090/api/assisted-install/v2/clusters/{cluster_id}/ignored-validations
+
+{cluster_id} in the above commands is the Cluster ID gathered during step#1
+
+
+              -- Ultimate
