@@ -4,13 +4,3 @@ The `your-directory` in home path will contain folders like `chapter1` `chapter2
 Each of the chapter will contain some text files.
 
 The name of the text file shall be title of the page or name for index in bookmark at left!
-
-<html>
-<p>&nbsp;</p>
-<p>README.txt</p>
-<p>&nbsp;</p>
-<div id="list">
-  <p><iframe src="mirrorring_oc-Mirror.txt" frameborder="0" height="400"
-      width="95%"></iframe></p>
-</div>
-</html>
